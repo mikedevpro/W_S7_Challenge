@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom'
 
 
 function Home() {
-  
+  const navigate = useNavigate()
+
+   
 
   return (
     <div>
@@ -12,8 +14,13 @@ function Home() {
         Welcome to Bloom Pizza!
       </h2>
       {/* clicking on the img should navigate to "/order" */}
-      <img alt="order-pizza" style={{ cursor: 'pointer' }} src={pizza} onClick />
-      
+      <button style={{background: 'none', border: 'none'}}>
+        <img alt="order-pizza" 
+        style={{ cursor: 'pointer' }} 
+        src={pizza} 
+        type='submit'
+        onClick={() => navigate('/order')} />
+      </button>
     </div>
   )
 }

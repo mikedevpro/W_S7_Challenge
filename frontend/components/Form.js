@@ -37,6 +37,7 @@ const toppings = [
   { topping_id: '5', text: 'Ham' },
 ]
 
+
 const initalValues = { 
   fullName: '', 
   size: '',
@@ -51,6 +52,7 @@ export default function Form() {
   const [success, setSuccess] = useState()
   const [failure, setFailure] = useState()
   const [enabled, setEnabled] = useState(false)
+  const [checkedToppings, setCheckedToppings] = useState({})
 
   useEffect(() => {
     formSchema.isValid(values).then(setEnabled)
@@ -131,7 +133,18 @@ export default function Form() {
 
       <div className="input-group">
         {/* 👇 Maybe you could generate the checkboxes dynamically */}
-        <label key="1">
+        
+          {toppings.map((topping) => (
+            <label key={topping.id}>
+              <input
+              type="checkbox"
+              checked={checkedToppings[topping.text] || false}
+              onChange={() => inputChange(topping.text)}
+            />
+            {topping.label}
+            </label>
+          ))}
+        {/* <label key="1">
           <input
             name="Pepperoni"
             type="checkbox"
@@ -169,7 +182,7 @@ export default function Form() {
             type="checkbox"
           />
           Ham<br />
-        </label>
+        </label> */}
         
       </div>
 

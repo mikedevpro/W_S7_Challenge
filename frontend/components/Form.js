@@ -21,11 +21,14 @@ const formSchema = yup.object().shape({
     .oneOf(['S','M','L'], validationErrors.sizeIncorrect),
 })
 
-
+const initalValues = () => ({ 
+  fullName: '', 
+  size: '',
+})
 
 const initalErrors = () => ({ 
-  fullname: '', 
-  size: '' 
+  fullName: '', 
+  size: '', 
 })
 
 // 👇 This array could help you construct your checkboxes using .map in the JSX.
@@ -38,17 +41,13 @@ const toppings = [
 ]
 
 
-const initalValues = { 
-  fullName: '', 
-  size: '',
-  toppings: []
-}
+
 
 
 export default function Form() {
   // const [fullname, setFullName] = useState('')
-  const [values, setValues] = useState(initalValues)
-  const [errors, setErrors] = useState(initalErrors)
+  const [values, setValues] = useState(initalValues())
+  const [errors, setErrors] = useState(initalErrors())
   const [success, setSuccess] = useState()
   const [failure, setFailure] = useState()
   const [enabled, setEnabled] = useState(false)
@@ -84,37 +83,38 @@ export default function Form() {
     //   .then(() => {setErrors({...errors, [name]: ''}) })
     //   .catch((error) => { setErrors({...errors, [name]: error.errors[0] });
     //  });
-    evt.preventDefault()
+    evt.preventDefault();
     axios
       .post("http://localhost:9009/api/order", values)
       .then(res => {
         setValues(initalValues())
         setSuccess(res.data.message);
-        setFailure();
+        setFailure('');
       })
       .catch(err => {
         setFailure(err.response.data.message);
-        setSuccess();
+        setSuccess('');
       });
   };
 
   return (
     <form onSubmit={onSubmit}>
       <h2>Order Your Pizza</h2>
-      {true && <div className='success'>{success}</div>}
-      {true && <div className='failure'>{failure}</div>}
+      
+      {success && <div className='success'>{success}</div>}
+      {success && <div className='failure'>{failure}</div>}
 
       <div className="input-group">
         <div>
           <label htmlFor="fullName">Full Name</label><br />
-          <input value={values.fullname}
+          <input value={values.fullName}
           onChange={inputChange}
           placeholder="Type full name" 
           id="fullName" 
           type="text" 
         />
         </div>
-        {true && <div className='error'>{errors.fullname}</div>}
+        { errors.fullName && <div className='error'>{errors.fullName}</div>}
       </div>
 
       <div className="input-group">
@@ -128,23 +128,25 @@ export default function Form() {
             <option value="L">Large</option>
           </select>
         </div>
-        {true && <div className='error'>{errors.size}</div>}
+        {errors.size && <div className='error'>{errors.size}</div>}
       </div>
 
       <div className="input-group">
         {/* 👇 Maybe you could generate the checkboxes dynamically */}
         
-          {toppings.map((topping) => (
+          {
+            toppings.map((topping) => (
             <label key={topping.id}>
               <input
               type="checkbox"
-              checked={checkedToppings[topping.text] || false}
-              onChange={() => inputChange(topping.text)}
+              name=""
+              checked={checkedToppings[topping.name] || false}
+              onChange={() => inputChange(topping.name)}
             />
             {topping.label}
             </label>
           ))}
-        {/* <label key="1">
+        <label key="1">
           <input
             name="Pepperoni"
             type="checkbox"
@@ -182,7 +184,7 @@ export default function Form() {
             type="checkbox"
           />
           Ham<br />
-        </label> */}
+        </label>
         
       </div>
 

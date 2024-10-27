@@ -13,6 +13,7 @@ const validationErrors = {
 const formSchema = yup.object().shape({
   fullName: yup
     .string()
+    .trim()
     .min(3, validationErrors.fullNameTooShort)
     .max(20, validationErrors.fullNameTooLong),
   size: yup 
@@ -32,15 +33,30 @@ const initalErrors = () => ({
 })
 
 // 👇 This array could help you construct your checkboxes using .map in the JSX.
-const toppings = [
-  { topping_id: '1', text: 'Pepperoni' },
-  { topping_id: '2', text: 'Green Peppers' },
-  { topping_id: '3', text: 'Pineapple' },
-  { topping_id: '4', text: 'Mushrooms' },
-  { topping_id: '5', text: 'Ham' },
-]
+const toppings= [
+   { topping_id: '1', 
+       text: 'Pepperoni', 
+     },
+   { topping_id: '2', 
+       text: 'Green Peppers', 
+     },
+   { topping_id: '3', 
+       text: 'Pineapple', 
+     },
+   { topping_id: '4', 
+       text: 'Mushrooms', 
+     },
+   { topping_id: '5', 
+       text: 'Ham', 
+     },
+ ];
 
-
+const checkboxList = toppings.map((topping, index) => (
+  <label key={topping.topping_id}>
+    <input type="checkbox" value={topping.topping_id} />
+    {topping}
+  </label>
+));
 
 
 
@@ -78,10 +94,10 @@ export default function Form() {
 
   const onSubmit = evt => {
     // yup
-    //   .reach(formSchema, name)
+    //   .reach(formSchema, fullName)
     //   .validate(value)
-    //   .then(() => {setErrors({...errors, [name]: ''}) })
-    //   .catch((error) => { setErrors({...errors, [name]: error.errors[0] });
+    //   .then(() => {setErrors({...errors, [fullName]: ''}) })
+    //   .catch((error) => { setErrors({...errors, [fullName]: error.errors[0] });
     //  });
     evt.preventDefault();
     axios
@@ -92,7 +108,7 @@ export default function Form() {
         setFailure('');
       })
       .catch(err => {
-        setFailure(err.response.data.message);
+        setFailure(err.res.data.message);
         setSuccess('');
       });
   };
@@ -102,7 +118,7 @@ export default function Form() {
       <h2>Order Your Pizza</h2>
       
       {success && <div className='success'>{success}</div>}
-      {success && <div className='failure'>{failure}</div>}
+      {failure && <div className='success'>{failure}</div>}
 
       <div className="input-group">
         <div>
@@ -134,21 +150,10 @@ export default function Form() {
       <div className="input-group">
         {/* 👇 Maybe you could generate the checkboxes dynamically */}
         
-          {
-            toppings.map((topping) => (
-            <label key={topping.id}>
-              <input
-              type="checkbox"
-              name=""
-              checked={checkedToppings[topping.name] || false}
-              onChange={() => inputChange(topping.name)}
-            />
-            {topping.label}
-            </label>
-          ))}
+          {}
         <label key="1">
           <input
-            name="Pepperoni"
+            name="1"
             type="checkbox"
           />
           Pepperoni<br />
@@ -156,7 +161,7 @@ export default function Form() {
 
         <label key="2">
           <input 
-            name="Green Peppers"
+            name="2"
             type="checkbox"
           />
           Green Peppers<br />
@@ -164,7 +169,7 @@ export default function Form() {
 
         <label key="3">
           <input
-            name="Pineapple"
+            name="3"
             type="checkbox"
           />
           Pineapple<br />
@@ -172,7 +177,7 @@ export default function Form() {
 
         <label key="4">
           <input 
-            name="Mushrooms"
+            name="4"
             type="checkbox"
           />
           Mushrooms<br />
@@ -180,7 +185,7 @@ export default function Form() {
 
         <label key="5">
           <input
-            name="Ham"
+            name="5"
             type="checkbox"
           />
           Ham<br />

@@ -7,7 +7,7 @@ describe('Sprint 7 Challenge Learner Tests', () => {
   👉 TASK 1 - Unit Testing of sum function at the bottom of this module
 
   Test the following. You can create separate tests or a single test with multiple assertions.
-
+  
     [1] sum() // throws an error 'pass valid numbers'
     [2] sum(2, 'seven') // throws an error 'pass valid numbers'
     [3] sum(1, 3) // returns 4
@@ -33,6 +33,26 @@ describe('Sprint 7 Challenge Learner Tests', () => {
 //     expect(true).toBe(false)
 //   })
 // })
+test('[1] throws an error if no arguments are passed', () => {
+  expect(() => sum()).toThrow('pass valid numbers');
+});
+
+test('[2] throws an error if one argument is not a number', () => {
+  expect(() => sum(2, 'seven')).toThrow('pass valid numbers');
+});
+
+test('[3] returns 4 when passed (1, 3)', () => {
+  expect(sum(1, 3)).toBe(4);
+})
+
+test('[4] returns 3 when passed ("1", 2)', () => {
+  expect(sum('1', 2)).toBe(3);
+})
+
+test('[5] returns 13 when passed ("10", "3")', () => {
+  expect(sum('10', '3')).toBe(13);
+})
+
 
 function sum(a, b) {
   a = Number(a)
@@ -43,12 +63,7 @@ function sum(a, b) {
   return a + b
 }
 
-  test('mathematize function', () => 
-  {
-    expect(sum()).toBe()
-  })
 
-  test.todo()
   // it("throws an error 'pass valid numbers'")
 
 
@@ -68,6 +83,6 @@ function HelloWorld() {
         </section>
       </main>
     </div>
-  )
+  );
 }
 })

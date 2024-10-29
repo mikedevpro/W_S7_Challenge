@@ -43,12 +43,12 @@ function sum(a, b) {
   return a + b
 }
 
-  it('mathematize function', () => 
+  test('mathematize function', () => 
   {
     expect(sum()).toBe()
   })
 
-  it()
+  test.todo()
   // it("throws an error 'pass valid numbers'")
 
 

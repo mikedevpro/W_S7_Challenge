@@ -54,6 +54,8 @@ test('[5] returns 13 when passed ("10", "3")', () => {
 })
 
 
+
+
 function sum(a, b) {
   a = Number(a)
   b = Number(b)
@@ -62,9 +64,6 @@ function sum(a, b) {
   }
   return a + b
 }
-
-
-  // it("throws an error 'pass valid numbers'")
 
 
 function HelloWorld() {

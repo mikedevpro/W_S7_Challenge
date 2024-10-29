@@ -43,9 +43,14 @@ function sum(a, b) {
   return a + b
 }
 
-describe('mathematize function', () => {
-  test(sum() // throws an error 'pass valid numbers')
-})
+  it('mathematize function', () => 
+  {
+    expect(sum()).toBe()
+  })
+
+  it()
+  // it("throws an error 'pass valid numbers'")
+
 
 function HelloWorld() {
   return (

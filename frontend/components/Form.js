@@ -20,54 +20,50 @@ const formSchema = yup.object().shape({
     .string()
     .trim()
     .oneOf(['S','M','L'], validationErrors.sizeIncorrect),
+  topping: yup
+    .string()
+    .trim()
+    .oneOf([1,2,3,4,5])
 })
 
 const initalValues = () => ({ 
   fullName: '', 
   size: '',
+  toppings: []
 })
 
 const initalErrors = () => ({ 
   fullName: '', 
   size: '', 
+  toppings: []
 })
 
 // 👇 This array could help you construct your checkboxes using .map in the JSX.
-const toppings= [
-   { topping_id: '1', 
-       text: 'Pepperoni', 
-     },
-   { topping_id: '2', 
-       text: 'Green Peppers', 
-     },
-   { topping_id: '3', 
-       text: 'Pineapple', 
-     },
-   { topping_id: '4', 
-       text: 'Mushrooms', 
-     },
-   { topping_id: '5', 
-       text: 'Ham', 
-     },
- ];
-
-const checkboxList = toppings.map((topping, index) => (
-  <label key={topping.topping_id}>
-    <input type="checkbox" value={topping.topping_id} />
-    {topping}
-  </label>
-));
-
-
+// const toppings= [
+//    { id: '1', 
+//        text: 'Pepperoni', 
+//      },
+//    { id: '2', 
+//        text: 'Green Peppers', 
+//      },
+//    { id: '3', 
+//        text: 'Pineapple', 
+//      },
+//    { id: '4', 
+//        text: 'Mushrooms', 
+//      },
+//    { id: '5', 
+//        text: 'Ham', 
+//      },
+//  ];
 
 export default function Form() {
-  // const [fullname, setFullName] = useState('')
   const [values, setValues] = useState(initalValues())
   const [errors, setErrors] = useState(initalErrors())
-  const [success, setSuccess] = useState()
+  const [success, setSuccess] = useState('')
   const [failure, setFailure] = useState()
   const [enabled, setEnabled] = useState(false)
-  const [checkedToppings, setCheckedToppings] = useState({})
+  // const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     formSchema.isValid(values).then(setEnabled)
@@ -86,25 +82,24 @@ export default function Form() {
     const {id, value} = evt.target
     validate(id, value)
     setValues({...values, [id]: value})
-    // if (type === 'checkbox') value = checked
-    // setFullName(value)
-    // setValues({...values, [name]: value})
-     //console.log(values)
+    // setIsChecked(evt.target.checked);
+  }
+
+ 
+  const handleCheckboxChange = (evt) => {
+    const { checked, name } = evt.target;
+    setValues({...values, toppings: checked ? values.toppings.concat(name) : 
+      values.toppings.filter(num => num != name)
+    })
   }
 
   const onSubmit = evt => {
-    // yup
-    //   .reach(formSchema, fullName)
-    //   .validate(value)
-    //   .then(() => {setErrors({...errors, [fullName]: ''}) })
-    //   .catch((error) => { setErrors({...errors, [fullName]: error.errors[0] });
-    //  });
     evt.preventDefault();
     axios
       .post("http://localhost:9009/api/order", values)
       .then(res => {
+        setSuccess(res.data.message)
         setValues(initalValues())
-        setSuccess(res.data.message);
         setFailure('');
       })
       .catch(err => {
@@ -116,9 +111,8 @@ export default function Form() {
   return (
     <form onSubmit={onSubmit}>
       <h2>Order Your Pizza</h2>
-      
+      {failure && <div className='failure'>{failure}</div>}
       {success && <div className='success'>{success}</div>}
-      {failure && <div className='success'>{failure}</div>}
 
       <div className="input-group">
         <div>
@@ -149,44 +143,53 @@ export default function Form() {
 
       <div className="input-group">
         {/* 👇 Maybe you could generate the checkboxes dynamically */}
-        
-          {}
-        <label key="1">
+
+        <label>
           <input
             name="1"
             type="checkbox"
+            // checked={isChecked}
+            onChange={handleCheckboxChange}
           />
           Pepperoni<br />
         </label> 
 
-        <label key="2">
+        <label>
           <input 
             name="2"
             type="checkbox"
+            // checked={isChecked}
+            onChange={handleCheckboxChange}
           />
           Green Peppers<br />
         </label>
 
-        <label key="3">
+        <label>
           <input
             name="3"
             type="checkbox"
+            // checked={isChecked}
+            onChange={handleCheckboxChange}
           />
           Pineapple<br />
         </label>
 
-        <label key="4">
+        <label>
           <input 
             name="4"
             type="checkbox"
+            // checked={isChecked}
+            onChange={handleCheckboxChange}
           />
           Mushrooms<br />
         </label>
 
-        <label key="5">
+        <label>
           <input
             name="5"
             type="checkbox"
+            // checked={isChecked}
+            onChange={handleCheckboxChange}
           />
           Ham<br />
         </label>
